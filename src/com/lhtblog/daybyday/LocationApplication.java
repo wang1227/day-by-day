@@ -18,7 +18,7 @@ public class LocationApplication extends Application {
 	public TextView mLocationResult,logMsg;
 	public TextView trigger,exit;
 	public Vibrator mVibrator;
-	
+	public String city;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -37,7 +37,8 @@ public class LocationApplication extends Application {
 		@Override
 		public void onReceiveLocation(BDLocation location) {
 			//Receive Location 
-			logMsg(location.getCity().toString());
+//			logMsg(location.getCity().toString());
+			MainActivity.city=location.getCity().toString();
 		}
 
 

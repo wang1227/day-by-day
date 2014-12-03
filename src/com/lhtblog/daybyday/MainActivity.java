@@ -29,12 +29,15 @@ public class MainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	ActionMode mActionMode;
-	private static final String INSTANCESTATE_TAB = "tab";
+	public static String city;
+	private LocationClient mLocationClient;
+	private static final String INSTANCESTATE_TAB = "今日";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setOffscreenPageLimit(2);// 预告加载的页面数量
 		final ActionBar bar = getActionBar();
@@ -47,8 +50,18 @@ public class MainActivity extends Activity {
 		mTabsAdapter.addTab(bar.newTab().setText("所有"), Tab2.class, null);
 		bar.setSelectedNavigationItem(PreferenceManager
 				.getDefaultSharedPreferences(this).getInt(INSTANCESTATE_TAB, 0));
+		InitLocation();
+		mLocationClient.start();
 	}
-
+	private void InitLocation() {
+		LocationClientOption option = new LocationClientOption();
+		option.setLocationMode(LocationMode.Battery_Saving);// 设置定位模式
+		option.setCoorType("gcj02");// 返回的定位结果是百度经纬度，默认值gcj02
+		// int span=5000;
+		// option.setScanSpan(span);//设置发起定位请求的间隔时间为5000ms
+		option.setIsNeedAddress(true);
+		mLocationClient.setLocOption(option);
+	}
 	protected void onPause() {
 		super.onPause();
 		SharedPreferences.Editor editor = PreferenceManager
@@ -142,7 +155,7 @@ public class MainActivity extends Activity {
 					mViewPager.setCurrentItem(i);
 				}
 			}
-			if (!tab.getText().equals("所有")) {
+			if (!tab.getText().equals("今日")) {
 				ActionMode actionMode = ((MainActivity) mContext)
 						.getActionMode();
 				if (actionMode != null) {
