@@ -1,4 +1,4 @@
-package com.lhtblog.daybyday;
+package function;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class SnCal {
-	Map paramsMap = new LinkedHashMap<String, String>();
+	Map<String, String> paramsMap = new LinkedHashMap<String, String>();
 	String city;
 
 	public SnCal(String citys) {

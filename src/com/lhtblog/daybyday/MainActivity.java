@@ -18,12 +18,6 @@ import android.content.SharedPreferences;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	ViewPager mViewPager;
@@ -46,8 +40,8 @@ public class MainActivity extends Activity {
 				| ActionBar.DISPLAY_SHOW_HOME);
 
 		mTabsAdapter = new TabsAdapter(MainActivity.this, mViewPager);
-		mTabsAdapter.addTab(bar.newTab().setText("今日"), Index.class, null);
-		mTabsAdapter.addTab(bar.newTab().setText("所有"), Tab2.class, null);
+		mTabsAdapter.addTab(bar.newTab().setText("今日"), IndexPage.class, null);
+		mTabsAdapter.addTab(bar.newTab().setText("所有"), SecondPage.class, null);
 		bar.setSelectedNavigationItem(PreferenceManager
 				.getDefaultSharedPreferences(this).getInt(INSTANCESTATE_TAB, 0));
 		InitLocation();

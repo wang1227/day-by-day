@@ -7,7 +7,6 @@ import com.baidu.location.LocationClient;
 import android.app.Application;
 import android.app.Service;
 import android.os.Vibrator;
-import android.util.Log;
 import android.widget.TextView;
 
 public class LocationApplication extends Application {
@@ -43,15 +42,4 @@ public class LocationApplication extends Application {
 
 
 	}
-	
-	
-	public void logMsg(String str) {
-		try {
-			if (mLocationResult != null)
-				mLocationResult.setText(str);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 }

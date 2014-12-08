@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 
 
-public class Tab2 extends Fragment {
+public class SecondPage extends Fragment {
 	TextView textView;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

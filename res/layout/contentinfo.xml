@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/et_contentinfo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="请输入标题"
+            android:maxWidth="200dp"
+            android:singleLine="true"
+            android:textColorHint="#87CEEB" />
+	
+        <Button
+            android:id="@+id/btn_contentinfo_selectcolor"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#87CEEB" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_contentinfo_setdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_contentinfo_settime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="优先级" />
+
+            <RadioGroup
+                android:id="@+id/rg_contentinfo_rg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/rb_contentinfo_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="重要" />
+
+                <RadioButton
+                    android:id="@+id/rb_contentinfo_mid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="中等" />
+
+                <RadioButton
+                    android:id="@+id/rb_contentinfo_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="次要" />
+            </RadioGroup>
+        </LinearLayout>
+        <EditText 
+            android:id="@+id/et_contentinfo_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+           	android:gravity="top"
+           	android:hint="请输入内容"
+          />
+    </LinearLayout>

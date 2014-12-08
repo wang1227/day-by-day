@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
@@ -13,12 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.LocationClientOption.LocationMode;
-
+import function.SnCal;
 import android.app.Fragment;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,10 +23,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class Index extends Fragment implements OnClickListener {
+public class IndexPage extends Fragment implements OnClickListener {
 	private TextView city;
 	private TextView date;
 	private TextView shishi;
@@ -39,6 +36,8 @@ public class Index extends Fragment implements OnClickListener {
 	private TextView tips;
 	private Button button;
 	private Handler handler;
+	private ImageView weatherPic;
+	private ListView showdata;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -48,6 +47,8 @@ public class Index extends Fragment implements OnClickListener {
 	}
 
 	public void init(View v) {
+		showdata=(ListView) v.findViewById(R.id.lv_tab1_show);
+		weatherPic=(ImageView) v.findViewById(R.id.iv_tab1_type);
 		city=(TextView) v.findViewById(R.id.tv_tab1_city);
 		date = (TextView) v.findViewById(R.id.tv_tab1_date);
 		shishi = (TextView) v.findViewById(R.id.tv_tab1_shishiwendu);
@@ -81,6 +82,7 @@ public class Index extends Fragment implements OnClickListener {
 		};
 		
 	}
+	
 	public void getWeather(String citys) {
 		citys.replace("市", "");
 		final String city=citys;
@@ -122,9 +124,10 @@ public class Index extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		getWeather(MainActivity.city);
+//		getWeather(MainActivity.city);
+		Intent intent=new Intent(getActivity(),ContentInfo.class);
+		startActivity(intent);
 	}
 
-	
 
 }
