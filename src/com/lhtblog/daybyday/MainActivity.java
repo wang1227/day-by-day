@@ -2,12 +2,6 @@ package com.lhtblog.daybyday;
 
 import java.util.ArrayList;
 
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.LocationClientOption.LocationMode;
-
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -15,9 +9,15 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ActionMode;
+
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.LocationClientOption.LocationMode;
 
 public class MainActivity extends Activity {
 	ViewPager mViewPager;
@@ -38,7 +38,6 @@ public class MainActivity extends Activity {
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE
 				| ActionBar.DISPLAY_SHOW_HOME);
-
 		mTabsAdapter = new TabsAdapter(MainActivity.this, mViewPager);
 		mTabsAdapter.addTab(bar.newTab().setText("今日"), IndexPage.class, null);
 		mTabsAdapter.addTab(bar.newTab().setText("所有"), SecondPage.class, null);
@@ -47,15 +46,17 @@ public class MainActivity extends Activity {
 		InitLocation();
 		mLocationClient.start();
 	}
+
 	private void InitLocation() {
 		LocationClientOption option = new LocationClientOption();
-		option.setLocationMode(LocationMode.Battery_Saving);// 设置定位模式
+		option.setLocationMode(LocationMode.Hight_Accuracy);// 设置定位模式
 		option.setCoorType("gcj02");// 返回的定位结果是百度经纬度，默认值gcj02
 		// int span=5000;
 		// option.setScanSpan(span);//设置发起定位请求的间隔时间为5000ms
 		option.setIsNeedAddress(true);
 		mLocationClient.setLocOption(option);
 	}
+
 	protected void onPause() {
 		super.onPause();
 		SharedPreferences.Editor editor = PreferenceManager
@@ -64,6 +65,7 @@ public class MainActivity extends Activity {
 				.getSelectedNavigationIndex());
 		editor.commit();
 	}
+
 	public void setActionMode(ActionMode actionMode) {
 		mActionMode = actionMode;
 	}
@@ -166,7 +168,5 @@ public class MainActivity extends Activity {
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		}
 	}
-
-
 
 }

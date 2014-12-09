@@ -4,12 +4,13 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
+        android:background="@drawable/top"
         android:id="@+id/rl_tab1_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
-
+	
         <LinearLayout
             android:id="@+id/ll_tab1_ll"
             android:layout_width="wrap_content"
@@ -66,11 +67,12 @@
     </RelativeLayout>
 
     <Button
+        android:gravity="center_horizontal"
         android:id="@+id/btn_tab1_new"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_tab1_top"
-        android:text="新建日程" />
+        android:background="@drawable/anniu"/>
 
     <ListView
         android:id="@+id/lv_tab1_show"

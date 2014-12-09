@@ -3,6 +3,11 @@
     tools:context="com.lhtblog.daybyday.MainActivity" >
 
     <item
+        android:id="@+id/delete"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="删除"/>
+    <item
         android:id="@+id/save"
         android:orderInCategory="100"
         android:showAsAction="always"

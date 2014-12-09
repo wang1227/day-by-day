@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-		String sql = "create table userinfo(username varchar(20) not null , password varchar(60) not null );";          
+		String sql = "create table info(id INTEGER PRIMARY KEY AUTOINCREMENT,date varchar not null,title varchar not null,contents varchar,alarm varchar ,youxianji varchar not null,textcolor int,openalarm varchar not null);";          
         db.execSQL(sql);
 	}
 

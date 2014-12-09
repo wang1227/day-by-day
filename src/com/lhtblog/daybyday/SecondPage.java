@@ -18,6 +18,7 @@ public class SecondPage extends Fragment {
 		View tab2= inflater.inflate(R.layout.detailed, container,false);
 //		 textView=(TextView) tab1.findViewById(R.id.textView1);
 //		 textView.setText("tab2");
+		
 		return tab2;
 		
 	}
