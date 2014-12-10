@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import function.DatabaseHelper;
+import function.SQLDbDao;
 import ColorPickerDialog.ColorPickerDialog;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -92,34 +93,20 @@ public class ContentInfo extends Activity implements OnClickListener {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		DatabaseHelper dh = new DatabaseHelper(this);
-		SQLiteDatabase db = null;
-		db = dh.getReadableDatabase();
-
 		switch (item.getItemId()) {
 		case R.id.save:
 			if (!TextUtils.isEmpty(title.getText())) {
 				Intent intent = getIntent();
 				String flag = intent.getStringExtra("flag");
 				if (flag.equals("新建")) {
-					String sql = "insert into info(date,title,contents,alarm,youxianji,textcolor,openalarm) values ('"
-							+ year
-							+ month
-							+ day
-							+ "','"
-							+ title.getText().toString().trim()
-							+ "','"
-							+ mContent.getText().toString().trim()
-							+ "','"
-							+ hour
-							+ minutes
-							+ "','"
-							+ importent
-							+ "','"
-							+ textcolor + "','boolean');";
-					db.execSQL(sql);
+					SQLDbDao sqlDbDao = new SQLDbDao(this);
+					sqlDbDao.save(String.valueOf(year) + String.valueOf(month)
+							+ String.valueOf(day), title.getText().toString()
+							.trim(), mContent.getText().toString().trim(),
+							String.valueOf(hour) + String.valueOf(minutes),
+							importent, textcolor, "是");
+					finish();
 				}
-				finish();
 			} else
 				Toast.makeText(this, "标题不能为空！", 500).show();
 			break;
@@ -135,12 +122,12 @@ public class ContentInfo extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.btn_contentinfo_selectcolor:
+		case R.id.btn_contentinfo_selectcolor: // 点击改变颜色按钮的事件
 			dialog = new ColorPickerDialog(ContentInfo.this, title
 					.getTextColors().getDefaultColor(), "Color Picker",
 					new ColorPickerDialog.OnColorChangedListener() {
 						@Override
-						public void colorChanged(int color) {
+						public void colorChanged(int color) { // 将改变的颜色用全局变量保存下来
 							textcolor = color;
 							title.setTextColor(color);
 							SelectColor.setBackgroundColor(color);
@@ -157,7 +144,7 @@ public class ContentInfo extends Activity implements OnClickListener {
 		case R.id.btn_contentinfo_settime:
 			TimePickerDialog tpd = new TimePickerDialog(this, Timelistener,
 					hour, minutes, true);
-			tpd.show();
+			tpd.show(); // 同上，显示时间组件
 			break;
 		}
 

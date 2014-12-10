@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -19,19 +20,23 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
 
+import function.DatabaseHelper;
+
 public class MainActivity extends Activity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	ActionMode mActionMode;
 	public static String city;
 	private LocationClient mLocationClient;
-	private static final String INSTANCESTATE_TAB = "今日";
+//	private static final String INSTANCESTATE_TAB = "今日";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		//加载定位服务
 		mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
+		//加载viewpager
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setOffscreenPageLimit(2);// 预告加载的页面数量
 		final ActionBar bar = getActionBar();
@@ -41,12 +46,15 @@ public class MainActivity extends Activity {
 		mTabsAdapter = new TabsAdapter(MainActivity.this, mViewPager);
 		mTabsAdapter.addTab(bar.newTab().setText("今日"), IndexPage.class, null);
 		mTabsAdapter.addTab(bar.newTab().setText("所有"), SecondPage.class, null);
-		bar.setSelectedNavigationItem(PreferenceManager
-				.getDefaultSharedPreferences(this).getInt(INSTANCESTATE_TAB, 0));
+		bar.setSelectedNavigationItem(0);
+//		bar.setSelectedNavigationItem(PreferenceManager
+//				.getDefaultSharedPreferences(this).getInt(INSTANCESTATE_TAB, 0));
 		InitLocation();
 		mLocationClient.start();
 	}
-
+	/*
+	 * 该方法调用了百度LBS服务，提交了相关设置
+	 */
 	private void InitLocation() {
 		LocationClientOption option = new LocationClientOption();
 		option.setLocationMode(LocationMode.Hight_Accuracy);// 设置定位模式
@@ -56,15 +64,15 @@ public class MainActivity extends Activity {
 		option.setIsNeedAddress(true);
 		mLocationClient.setLocOption(option);
 	}
-
-	protected void onPause() {
-		super.onPause();
-		SharedPreferences.Editor editor = PreferenceManager
-				.getDefaultSharedPreferences(this).edit();
-		editor.putInt(INSTANCESTATE_TAB, getActionBar()
-				.getSelectedNavigationIndex());
-		editor.commit();
-	}
+	//保存页面的状态
+//	protected void onPause() {
+//		super.onPause();
+//		SharedPreferences.Editor editor = PreferenceManager
+//				.getDefaultSharedPreferences(this).edit();
+//		editor.putInt(INSTANCESTATE_TAB, getActionBar()
+//				.getSelectedNavigationIndex());
+//		editor.commit();
+//	}
 
 	public void setActionMode(ActionMode actionMode) {
 		mActionMode = actionMode;

@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
-
+	
+	/*
+	 * 这是所有页面的fragment
+	 */
 public class SecondPage extends Fragment {
 	TextView textView;
 	@Override

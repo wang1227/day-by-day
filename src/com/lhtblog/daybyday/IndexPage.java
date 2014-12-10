@@ -17,10 +17,12 @@ import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -30,6 +32,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import function.DatabaseHelper;
 import function.SnCal;
 
@@ -43,9 +46,11 @@ public class IndexPage extends Fragment implements OnClickListener {
 	private int year;
 	private int month;
 	private int day;
+	String today;
 	private Button button;
 	private ImageView weatherPic;
 	private ListView showdata;
+	//handler接收天气json数据并解析，并刷新控件显示数据
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			try {
@@ -68,24 +73,24 @@ public class IndexPage extends Fragment implements OnClickListener {
 			}
 		}
 	};
-	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View tab1 = inflater.inflate(R.layout.tab1, container, false);
 		init(tab1);
+		getMyDate();
 		return tab1;
 	}
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onViewCreated(view, savedInstanceState);
-		new Thread(){
+		//延时1秒，获取天气信息
+		new Thread() {
 			public void run() {
 				try {
-					sleep(500);
-//					getWeather(MainActivity.city);
+					sleep(1000);
+					getWeather(MainActivity.city);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -93,10 +98,8 @@ public class IndexPage extends Fragment implements OnClickListener {
 			};
 		}.start();
 	}
+
 	public void init(View v) {
-		DatabaseHelper dh = new DatabaseHelper(getActivity());
-		SQLiteDatabase db = null;
-		db = dh.getReadableDatabase();
 		showdata = (ListView) v.findViewById(R.id.lv_tab1_show);
 		weatherPic = (ImageView) v.findViewById(R.id.iv_tab1_type);
 		city = (TextView) v.findViewById(R.id.tv_tab1_city);
@@ -107,9 +110,8 @@ public class IndexPage extends Fragment implements OnClickListener {
 		tips = (TextView) v.findViewById(R.id.tv_tab1_tips);
 		button = (Button) v.findViewById(R.id.btn_tab1_new);
 		button.setOnClickListener(this);
-
 	}
-
+	//根据城市从百度天气API获取相应的天气信息
 	public void getWeather(String citys) {
 		citys.replace("市", "");
 		final String city = citys;
@@ -121,7 +123,7 @@ public class IndexPage extends Fragment implements OnClickListener {
 					url = "http://api.map.baidu.com/telematics/v3/weather?location="
 							+ city
 							+ "&output=json&ak=sbiOMaZAHDWksopxYLKfihxT&sn="
-							+ sn.getUrl();
+							+ sn.getUrl();//算加密后的key值
 				} catch (UnsupportedEncodingException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -129,6 +131,7 @@ public class IndexPage extends Fragment implements OnClickListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				//用Get方法获取数据
 				HttpGet request = new HttpGet(url);
 				String result = null;
 				Message msg = handler.obtainMessage();
@@ -138,6 +141,7 @@ public class IndexPage extends Fragment implements OnClickListener {
 					if (response.getStatusLine().getStatusCode() == 200) {
 						result = EntityUtils.toString(response.getEntity(),
 								HTTP.UTF_8);
+						//数据获取后发送给handler处理数据
 						msg.obj = result;
 						handler.sendMessage(msg);
 					}
@@ -148,7 +152,7 @@ public class IndexPage extends Fragment implements OnClickListener {
 			};
 		}.start();
 	}
-
+		//得到系统当前的时间信息
 	private void getMyDate() {
 		Calendar mycalendar = Calendar.getInstance(Locale.CHINA);
 		Date mydate = new Date(); // 获取当前日期Date对象
@@ -156,8 +160,10 @@ public class IndexPage extends Fragment implements OnClickListener {
 		year = mycalendar.get(Calendar.YEAR); // 获取Calendar对象中的年
 		month = mycalendar.get(Calendar.MONTH);// 获取Calendar对象中的月
 		day = mycalendar.get(Calendar.DAY_OF_MONTH);// 获取这个月的第几天
+		today = String.valueOf(year) + String.valueOf(month)
+				+ String.valueOf(day);
 	}
-
+	//点击新建按钮跳转到添加/修改界面
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
