@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	
+    <item
+        android:id="@+id/menu_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:showAsAction="ifRoom"
+        android:title="搜索"/>
+    <item
+        android:title="新建"
+        android:id="@+id/menu_additem"
+		android:showAsAction="always"
+		android:icon="@drawable/ap9"
+		/> 
+    <item
+        android:id="@+id/checkupdate"
+        android:orderInCategory="1"
+        android:showAsAction="never"
+        android:title="检查更新"/>
+    <item
+        android:id="@+id/about"
+        android:orderInCategory="10"
+        android:showAsAction="never"
+        android:title="关于"/>
+    <item
+        android:id="@+id/postquestion"
+        android:orderInCategory="5"
+        android:showAsAction="never"
+        android:title="问题反馈"/>
+
+</menu>

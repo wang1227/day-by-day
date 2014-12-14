@@ -3,17 +3,15 @@ package com.lhtblog.daybyday;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
-import function.DatabaseHelper;
-import function.SQLDbDao;
 import ColorPickerDialog.ColorPickerDialog;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -28,6 +26,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import function.SQLDbDao;
 
 public class ContentInfo extends Activity implements OnClickListener {
 	private int year;
@@ -43,12 +42,15 @@ public class ContentInfo extends Activity implements OnClickListener {
 	private EditText title, mContent;
 	private RadioGroup group;
 	private String importent = "重要";
+	private Intent intent;
+	private SQLDbDao sqlDbDao;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contentinfo);
+		sqlDbDao=new SQLDbDao(this);
 		mContent = (EditText) findViewById(R.id.et_contentinfo_content);
 		setdate = (Button) findViewById(R.id.btn_contentinfo_setdate);
 		settime = (Button) findViewById(R.id.btn_contentinfo_settime);
@@ -71,7 +73,15 @@ public class ContentInfo extends Activity implements OnClickListener {
 		weeks = new String[] { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
 		setDate();
 	}
-
+	protected void onStart() {
+		intent = getIntent();
+		String flag=intent.getStringExtra("flag");
+		if (flag.equals("更新")) {
+			String id = intent.getStringExtra("id");
+//			Cursor c=sqlDbDao.find("20141214");
+//			Toast.makeText(this, c.getString(c.getColumnIndex("title")), 500).show();
+		}
+	};
 	public void setDate() {
 		Calendar mycalendar = Calendar.getInstance(Locale.CHINA);
 		Date mydate = new Date(); // 获取当前日期Date对象
@@ -96,11 +106,10 @@ public class ContentInfo extends Activity implements OnClickListener {
 		switch (item.getItemId()) {
 		case R.id.save:
 			if (!TextUtils.isEmpty(title.getText())) {
-				Intent intent = getIntent();
 				String flag = intent.getStringExtra("flag");
 				if (flag.equals("新建")) {
-					SQLDbDao sqlDbDao = new SQLDbDao(this);
-					sqlDbDao.save(String.valueOf(year) + String.valueOf(month)
+
+					sqlDbDao.save(String.valueOf(year) + String.valueOf(month+1)
 							+ String.valueOf(day), title.getText().toString()
 							.trim(), mContent.getText().toString().trim(),
 							String.valueOf(hour) + String.valueOf(minutes),

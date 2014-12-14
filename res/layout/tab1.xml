@@ -4,13 +4,13 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
-        android:background="@drawable/top"
         android:id="@+id/rl_tab1_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
-	
+        android:layout_alignParentTop="true"
+        android:background="@drawable/top" >
+
         <LinearLayout
             android:id="@+id/ll_tab1_ll"
             android:layout_width="wrap_content"
@@ -20,65 +20,51 @@
             <TextView
                 android:id="@+id/tv_tab1_city"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-               />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_tab1_date"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_tab1_shishiwendu"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                 />
-
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_tab1_weather"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_tab1_temple"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="wrap_content" />
         </LinearLayout>
-
+		<!--  
         <ImageView
+            android:contentDescription="@null"
             android:id="@+id/iv_tab1_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/ic_launcher" />
-
+		-->
         <TextView
             android:id="@+id/tv_tab1_tips"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/ll_tab1_ll"
             android:layout_alignParentRight="true" />
-
     </RelativeLayout>
-
-    <Button
-        android:gravity="center_horizontal"
-        android:id="@+id/btn_tab1_new"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_tab1_top"
-        android:background="@drawable/anniu"/>
 
     <ListView
         android:id="@+id/lv_tab1_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_tab1_new" >
+        android:layout_below="@id/rl_tab1_top" >
     </ListView>
 
 </RelativeLayout>
