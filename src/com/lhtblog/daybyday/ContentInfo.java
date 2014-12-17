@@ -3,15 +3,18 @@ package com.lhtblog.daybyday;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
+
+import org.litepal.crud.DataSupport;
 
 import ColorPickerDialog.ColorPickerDialog;
+import DatabaseTest.Info;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -26,7 +29,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import function.SQLDbDao;
 
 public class ContentInfo extends Activity implements OnClickListener {
 	private int year;
@@ -43,14 +45,14 @@ public class ContentInfo extends Activity implements OnClickListener {
 	private RadioGroup group;
 	private String importent = "重要";
 	private Intent intent;
-	private SQLDbDao sqlDbDao;
+	private String flag = null;
+	private String id = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.contentinfo);
-		sqlDbDao=new SQLDbDao(this);
 		mContent = (EditText) findViewById(R.id.et_contentinfo_content);
 		setdate = (Button) findViewById(R.id.btn_contentinfo_setdate);
 		settime = (Button) findViewById(R.id.btn_contentinfo_settime);
@@ -73,15 +75,23 @@ public class ContentInfo extends Activity implements OnClickListener {
 		weeks = new String[] { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
 		setDate();
 	}
+
 	protected void onStart() {
+		super.onStart();
 		intent = getIntent();
-		String flag=intent.getStringExtra("flag");
+		flag = intent.getStringExtra("flag");
 		if (flag.equals("更新")) {
-			String id = intent.getStringExtra("id");
-//			Cursor c=sqlDbDao.find("20141214");
-//			Toast.makeText(this, c.getString(c.getColumnIndex("title")), 500).show();
+			id = intent.getStringExtra("id");
+			Info info = DataSupport.find(Info.class, Integer.valueOf(id));
+			title.setText(info.getTitle());
+			title.setTextColor(info.getTextcolor());
+			setdate.setText(info.getDate());
+			SelectColor.setBackgroundColor(info.getTextcolor());
+			settime.setText(info.getAlarm());
+			mContent.setText(info.getContent());
 		}
 	};
+
 	public void setDate() {
 		Calendar mycalendar = Calendar.getInstance(Locale.CHINA);
 		Date mydate = new Date(); // 获取当前日期Date对象
@@ -106,14 +116,34 @@ public class ContentInfo extends Activity implements OnClickListener {
 		switch (item.getItemId()) {
 		case R.id.save:
 			if (!TextUtils.isEmpty(title.getText())) {
-				String flag = intent.getStringExtra("flag");
 				if (flag.equals("新建")) {
-
-					sqlDbDao.save(String.valueOf(year) + String.valueOf(month+1)
-							+ String.valueOf(day), title.getText().toString()
-							.trim(), mContent.getText().toString().trim(),
-							String.valueOf(hour) + String.valueOf(minutes),
-							importent, textcolor, "是");
+					Info info = new Info();
+					info.setTitle(title.getText().toString().trim());
+					info.setDate(String.valueOf(year)
+							+ String.valueOf(month + 1) + String.valueOf(day));
+					info.setContent(mContent.getText().toString().trim());
+					info.setAlarm(String.valueOf(hour)
+							+ String.valueOf(minutes));
+					info.setYouxianji(importent);
+					info.setTextcolor(textcolor);
+					if (info.save())
+						Toast.makeText(ContentInfo.this, "存储成功",
+								Toast.LENGTH_SHORT).show();
+					else
+						Toast.makeText(ContentInfo.this, "存储失败",
+								Toast.LENGTH_LONG).show();
+					finish();
+				} else if (flag.equals("更新")) {
+					ContentValues values = new ContentValues();
+					values.put("title", title.getText().toString().trim());
+					values.put("date",
+							String.valueOf(year) + String.valueOf(month + 1)
+									+ String.valueOf(day));
+					values.put("content", mContent.getText().toString().trim());
+					values.put("alarm",
+							String.valueOf(hour) + String.valueOf(minutes));
+					values.put("youxianji", importent);
+					DataSupport.update(Info.class, values, Integer.valueOf(id));
 					finish();
 				}
 			} else

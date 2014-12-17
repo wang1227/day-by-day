@@ -46,6 +46,7 @@
                 </action>
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="keVHMmmuNfL325CYGMo4rsBt" />
@@ -59,8 +60,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-	<activity 
-	    android:name=".ContentInfo"></activity>
+        <activity android:name=".ContentInfo" >
+        </activity>
     </application>
 
 </manifest>

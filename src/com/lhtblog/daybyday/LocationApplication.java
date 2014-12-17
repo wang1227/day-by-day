@@ -1,5 +1,7 @@
 package com.lhtblog.daybyday;
 
+import org.litepal.LitePalApplication;
+
 import android.app.Application;
 import android.app.Service;
 import android.os.Vibrator;
@@ -10,7 +12,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.GeofenceClient;
 import com.baidu.location.LocationClient;
 
-public class LocationApplication extends Application {
+public class LocationApplication extends LitePalApplication {
 	public LocationClient mLocationClient;
 	public GeofenceClient mGeofenceClient;
 	public MyLocationListener mMyLocationListener;

@@ -7,6 +7,7 @@
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"/>
     <TextView
+        android:textColor="#000"
         android:textSize="30dp"
         android:id="@+id/tv_lv_show"
         android:layout_width="wrap_content"

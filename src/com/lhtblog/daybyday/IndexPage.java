@@ -2,8 +2,10 @@ package com.lhtblog.daybyday;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.HttpResponse;
@@ -14,7 +16,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.litepal.crud.DataSupport;
 
+import DatabaseTest.Info;
 import android.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,8 +32,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import function.ListViewAdapter;
-import function.SQLDbDao;
 import function.SnCal;
 
 public class IndexPage extends Fragment implements OnItemClickListener {
@@ -42,7 +46,7 @@ public class IndexPage extends Fragment implements OnItemClickListener {
 	private int year;
 	private int month;
 	private int day;
-	private Cursor c;
+	private List<Info> list;
 	String today;
 	private ListView showdata;
 	// handler接收天气json数据并解析，并刷新控件显示数据
@@ -106,13 +110,8 @@ public class IndexPage extends Fragment implements OnItemClickListener {
 	}
 
 	public void updatelistview() {
-		SQLDbDao sql = new SQLDbDao(getActivity());
-		// sql.find(today);
-		String[] columnNames = { "_id", "title" };
-		c = sql.find(today);
-		ListViewAdapter adapter = new ListViewAdapter(getActivity()
-				.getApplicationContext(), R.layout.listview, c, columnNames,
-				new int[] { R.id.tv_lv_id, R.id.tv_lv_show });
+		list = DataSupport.where("date = ?",today).find(Info.class);
+		ListViewAdapter adapter = new ListViewAdapter(getActivity(), list);
 		showdata.setAdapter(adapter);
 		showdata.setOnItemClickListener(this);
 	}
@@ -181,7 +180,7 @@ public class IndexPage extends Fragment implements OnItemClickListener {
 		year = mycalendar.get(Calendar.YEAR); // 获取Calendar对象中的年
 		month = mycalendar.get(Calendar.MONTH);// 获取Calendar对象中的月
 		day = mycalendar.get(Calendar.DAY_OF_MONTH);// 获取这个月的第几天
-		today = String.valueOf(year) + String.valueOf(month+1)
+		today = String.valueOf(year) + String.valueOf(month + 1)
 				+ String.valueOf(day);
 	}
 
@@ -192,7 +191,7 @@ public class IndexPage extends Fragment implements OnItemClickListener {
 		TextView tv = (TextView) view.findViewById(R.id.tv_lv_id);
 		Intent intent = new Intent(getActivity(), ContentInfo.class);
 		intent.putExtra("flag", "更新");
-		intent.putExtra("id", tv.getText().toString());
+		intent.putExtra("id",tv.getText().toString());	
 		startActivity(intent);
 	}
 
